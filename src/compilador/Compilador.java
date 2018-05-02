@@ -6,8 +6,8 @@
 package compilador;
 
 import analisislexico.AbrirArchivo;
-import analisislexico.ListaVariables;
-import analisislexico.TablaSimbolos;
+import analisislexico.Lexico;
+import analisislexico.Sintactico;
 
 /**
  *
@@ -16,30 +16,11 @@ import analisislexico.TablaSimbolos;
 public class Compilador {
     
     public static void main(String args[]){
-        AbrirArchivo abrirA = new AbrirArchivo();
-        abrirA.abrir();
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println(abrirA.respuestaVariable());
-        System.out.println("\n-- Variables encontradas --");
-        abrirA.getVariable();
         
-        System.out.println();
+        AbrirArchivo abrirA = new AbrirArchivo();
+        Sintactico sin = new Sintactico(new Lexico(abrirA.abrirInstancia()));
+        sin.Programa();
+        
     }
     
 }

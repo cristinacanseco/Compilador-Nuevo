@@ -16,8 +16,10 @@ public class ListaError {
     
     public ListaError(){
         this.error = new ArrayList<Error>();
-        this.error.add(new Error(0, "¡¡Error!! Caracter Inválido: "));
-        this.error.add(new Error(1, "¡¡Error!! Cadena inválida, es una palabra reservada: "));
+        this.error.add(new Error(0, "Error 0.  Caracter Inválido "));
+        this.error.add(new Error(1, "Error 1.  Cadena inválida, es una palabra reservada "));
+        this.error.add(new Error(2, "Error 2.  No es un identificador válido "));
+        this.error.add(new Error(3, "Error 3.  Se esperaba "));
     }
 
     public ArrayList<Error> getError() {

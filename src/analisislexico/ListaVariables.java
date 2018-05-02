@@ -30,7 +30,7 @@ public class ListaVariables {
     
     public void agregarVariable(int id, String variable){
         this.variable.add(new Variable(id, variable));
-        System.out.println();
+        //System.out.println();
     }
      
 }
