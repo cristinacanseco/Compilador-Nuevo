@@ -61,11 +61,17 @@ public class Lexico {
                            //return cadenaV;
                         }
                 }else {
+                    if(cadenaV.equals("")){
+                        i++;
+                        crearCadena();
+                    }else{
                     //return cadenaE1 + cadenaV;
-                    return cadenaV;
+                        return cadenaV;
+                    }
                 }
             }
         }
+        return null;
         
     }
     
@@ -73,7 +79,15 @@ public class Lexico {
         cadenaV = ""; 
         
         if (i < this.cadena.size()) {
+            while(validarEspacio((char) this.cadena.get(i))){
+                    i++;
+                    cadenaV="";
+                }  
+            
             if (!validarLetra((char) this.cadena.get(i)) && (!validarNumero((char) this.cadena.get(i)) && (!validarPunto((char) this.cadena.get(i)))  )) {      
+                  
+               
+                
                 //Validar ;)
                 if ((validarPuntoComa((char) this.cadena.get(i)))  ){
                     cadenaV += this.cadena.get(i);
@@ -137,10 +151,20 @@ public class Lexico {
                                                 i++;
                                             }                                           
                                         }else{
-                                            cadenaV += this.cadena.get(i);
-                                            i++;
-                                            if (!esPalabraReservada(cadenaV)){ 
-                                                e++;
+                                            //Validar :)
+                                            if ((validar2Puntos((char) this.cadena.get(i))) ){
+                                                cadenaV += this.cadena.get(i);
+                                                i++;
+                                                if ( i<this.cadena.size() && (validarGuino((char) this.cadena.get(i))) ){
+                                                    cadenaV += this.cadena.get(i);
+                                                    i++;
+                                                }                                           
+                                            }else{
+                                                cadenaV += this.cadena.get(i);
+                                                i++;
+                                                if (!esPalabraReservada(cadenaV)){ 
+                                                    e++;
+                                                }   
                                             }
                                            
                                         }
@@ -151,8 +175,15 @@ public class Lexico {
                     }
                 }
                 
+                
             } else {
-                while (i < cadena.size()) {                    
+                
+                while (i < cadena.size()) {    
+                    
+                    if(validarEspacio((char) this.cadena.get(i))){
+                        i++;
+                        cadenaV="";
+                    }  
                     if (this.bandera == 0) {
                         //Validar Variable
                         if (validarLetra((char) this.cadena.get(i))) {
@@ -168,9 +199,14 @@ public class Lexico {
                                 cadenaV += this.cadena.get(i);
                                 i++;
                             } else {
+                                if(validarEspacio((char) this.cadena.get(i))){
+                                    i++;
+                                    break;
+                                }else{
                                 //Es punto para entrar aquí
-                                cadenaV = "" + ((char) this.cadena.get(i));
-                                i++;
+                                    cadenaV = "" + ((char) this.cadena.get(i));
+                                    i++;
+                                }
                                 //break;
                             }
                         }
@@ -185,6 +221,10 @@ public class Lexico {
                                 break;
                             }
                             if (esPalabraReservada(cadenaV)){ 
+                                break;
+                            }
+                            if(validarEspacio((char) this.cadena.get(i))){
+                                i++;
                                 break;
                             }
                         } else {
@@ -204,6 +244,10 @@ public class Lexico {
                                     i++;
                                 }
                                 if ((i < cadena.size()) && (!validarNumero((char) this.cadena.get(i)) && (!validarPunto((char) this.cadena.get(i))))) {
+                                    break;
+                                }
+                                if(validarEspacio((char) this.cadena.get(i))){
+                                    i++;
                                     break;
                                 }
                             }
@@ -311,6 +355,14 @@ public class Lexico {
     
     public boolean validarPipe(char c) {
         if (c == 124) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+     public boolean validar2Puntos(char c) {
+        if (c == 58) {
             return true;
         } else {
             return false;

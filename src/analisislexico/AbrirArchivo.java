@@ -67,7 +67,7 @@ public class AbrirArchivo {
                 while (true) {
                     int caracter = archivos.read();
                     while (caracter != -1) {
-                        if(caracter == 10 || caracter == 13 || caracter == 32){
+                        if(caracter == 10 || caracter == 13 ){
                             
                         }else{
                             cadena.add((char) caracter);
