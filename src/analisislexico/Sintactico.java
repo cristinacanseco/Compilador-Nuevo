@@ -44,7 +44,7 @@ public class Sintactico {
         token = lex.lexicoR();
         //System.out.println("1 "+token);
         if(!token.equals("soyVacio")){
-            if(!token.equals("Fijo") && !token.equals("Itera") && !token.equals("Ja") && !token.equals("ident") && !token.equals("Ven") && !token.equals("Funcion") && !token.equals(";)") && !token.equals(":)")){
+            if(!token.equals("Fijo") && !token.equals("Itera") && !token.equals("Ja") && !token.equals("ident") && !token.equals("Ven") && !token.equals("Funcion") && !token.equals("{")){
                 if(token.equals("Ent") || token.equals("Dec") || token.equals("Let")){
                     token = lex.lexicoR();
                     //System.out.println("2 "+token);
@@ -110,7 +110,7 @@ public class Sintactico {
     public void Fijo(){
         //token = lex.lexicoR(); 
          if(!token.equals("soyVacio")){
-            if(!token.equals("Itera") && !token.equals("Ja") && !token.equals("ident") && !token.equals("Funcion") && !token.equals("Ven") && !token.equals(":)")){
+            if(!token.equals("Itera") && !token.equals("Ja") && !token.equals("ident") && !token.equals("Funcion") && !token.equals("Ven") && !token.equals("{")){
                 if(token.equals("Fijo")){
                     token = lex.lexicoR();
                     if(token.equals("ident")){
@@ -196,22 +196,19 @@ public class Sintactico {
         
     }
     
-    public void Instrucciones(){
-        if(!token.equals("Kein") && !token.equals("Fin") && !token.equals("Nein") && !token.equals(";)")){     
-            AuxInst();
-            if(!token.equals(":)")){
-                if(e>0){
-                    e++;
-                    System.out.println(error3 + " :)");
-                }
+    public void AuxInst(){
+        token = lex.lexicoR();
+        if(!token.equals("}")){     
+            if(token.equals(";)")){
+                Instrucciones();
+                AuxInst();
             }
         }
     }
     
-    public void AuxInst(){
+    public void Instrucciones(){
         //token = lex.lexicoR();
         if(!token.equals("soyVacio")){
-            if(!token.equals(":)")){
                 switch (token){
                     case "Itera":
                         token = lex.lexicoR();
@@ -276,7 +273,7 @@ public class Sintactico {
                             token = lex.lexicoR();
                             if(token.equals(":")){
                                 Instrucciones();
-                                token = lex.lexicoR();
+                                //token = lex.lexicoR();
                                 if(token.equals("Fin")){
                                     token = lex.lexicoR();
                                     Instrucciones();
@@ -336,10 +333,21 @@ public class Sintactico {
                             }
                         }
                         break;
+                        
+                     case "{":
+                        token = lex.lexicoR();
+                        Instrucciones();
+                        AuxInst();
+                        token = lex.lexicoR();
+                        if(!token.equals("}")){
+                            System.out.println(error3+" }");
+                        }
+                        break;    
                     default:
+                        
                         break;
                 }
-            }
+            
         }else{
             e++;
             System.out.println(error3 + ":)");
@@ -356,7 +364,7 @@ public class Sintactico {
     
     public void AuxIf(){
         if(!token.equals("soyVacio")){
-            if( !token.equals("Fin") && !token.equals("Nein")){
+            if( !token.equals("Itera") && !token.equals("Ja") && !token.equals("ident") && !token.equals("Funcion") && !token.equals("Ven") && !token.equals("{") ){
                 if(token.equals("Kein")){
                     Condicion();
                     if(token.equals("to")){
@@ -432,7 +440,7 @@ public class Sintactico {
     public void AuxCond4(){
         //token = lex.lexicoR();
         if(!token.equals("noMas")){
-            if(!token.equals("to") && !token.equals("num") && !token.equals("ident")){
+            if(!token.equals("to")){
                 Condicion();
                 AuxCond4();
             }
@@ -470,7 +478,7 @@ public class Sintactico {
         token = lex.lexicoR();
         
         if(!token.equals("soyVacio")){
-            if(!token.equals(")") && !token.equals("Itera") && !token.equals("Ja") && !token.equals("ident") && !token.equals("Funcion") && !token.equals("Ven") && !token.equals("Kein") ){
+            if(!token.equals(")") && !token.equals("Itera") && !token.equals("Ja") && !token.equals("ident") && !token.equals("Funcion") && !token.equals("Ven") && !token.equals("{") ){
                 switch (token){
                     case "+":
                         AuxExpre();

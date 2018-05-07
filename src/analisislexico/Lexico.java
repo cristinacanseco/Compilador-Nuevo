@@ -152,19 +152,21 @@ public class Lexico {
                                             }                                           
                                         }else{
                                             //Validar :)
-                                            if ((validar2Puntos((char) this.cadena.get(i))) ){
+                                            if ( llaveAbre((char) this.cadena.get(i)) ){
                                                 cadenaV += this.cadena.get(i);
                                                 i++;
-                                                if ( i<this.cadena.size() && (validarGuino((char) this.cadena.get(i))) ){
+                                                                                      
+                                            }else{
+                                                if ( llaveCierra((char) this.cadena.get(i)) ){
                                                     cadenaV += this.cadena.get(i);
                                                     i++;
-                                                }                                           
-                                            }else{
-                                                cadenaV += this.cadena.get(i);
-                                                i++;
-                                                if (!esPalabraReservada(cadenaV)){ 
-                                                    e++;
-                                                }   
+                                                }else{     
+                                                    cadenaV += this.cadena.get(i);
+                                                    i++;
+                                                    if (!esPalabraReservada(cadenaV)){ 
+                                                        e++;
+                                                    }   
+                                                }
                                             }
                                            
                                         }
@@ -361,8 +363,25 @@ public class Lexico {
         }
     }
     
-     public boolean validar2Puntos(char c) {
+    public boolean validar2Puntos(char c) {
         if (c == 58) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean llaveAbre(char c) {
+        if (c == 123) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
+    public boolean llaveCierra(char c) {
+        if (c == 125) {
             return true;
         } else {
             return false;
@@ -392,5 +411,6 @@ public class Lexico {
         lv.agregarVariable(id, cadena);
         id++;
     }
+    
     
 }
