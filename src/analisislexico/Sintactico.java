@@ -121,7 +121,7 @@ public class Sintactico {
                             if(!token.equals(";)")){
                                 if(!token.equals("noMas")){
                                     e++;
-                                    System.out.println(error3+";)");
+                                    System.out.println(error3+";) Fijo");
                                 }
                             }else{
                                 token = lex.lexicoR();
@@ -130,7 +130,7 @@ public class Sintactico {
                         }else{
                             if(!token.equals("noMas")){
                                 e++;
-                                System.out.println(error3+"=");
+                                System.out.println(error3+"= Fijo");
                             }
                         }
                     }else{
@@ -226,14 +226,15 @@ public class Sintactico {
                                                 AuxFor();
                                                 token = lex.lexicoR();
                                                 Instrucciones();
-                                                token = lex.lexicoR();
+                                                
                                                 if(!token.equals("Fin")){                                                  
-//                                                    if(!token.equals("noMas")){
-//                                                        e++;
-//                                                        System.out.println(error3+"Fin");
-//                                                    }else{   
-                                                        Instrucciones();
-                                                    //}
+                                                    if(!token.equals("noMas")){
+                                                        e++;
+                                                        System.out.println(error3+"Fin");
+                                                    }
+                                                }else{
+                                                    token = lex.lexicoR();
+                                                    Instrucciones();
                                                 }
                                             }else{
                                                 if(!token.equals("noMas")){ e++;
@@ -257,7 +258,7 @@ public class Sintactico {
                                 }
                             }else{
                                 if(!token.equals("noMas")){ e++;
-                                    System.out.println(error3+"="
+                                    System.out.println(error3+"= Itera"
                                             + "");
                                 }
                             }
@@ -272,6 +273,7 @@ public class Sintactico {
                         if(token.equals("ident")){
                             token = lex.lexicoR();
                             if(token.equals(":")){
+                                token = lex.lexicoR();
                                 Instrucciones();
                                 //token = lex.lexicoR();
                                 if(token.equals("Fin")){
@@ -302,7 +304,7 @@ public class Sintactico {
                                 Instrucciones();
                             }else{
                                 if(!token.equals("noMas")){ e++;
-                                    System.out.println(error3+";)");
+                                    System.out.println(error3+";) ven");
                                 }
                             }
                         }else{   
@@ -329,7 +331,7 @@ public class Sintactico {
                             Instrucciones();
                         }else{
                             if(!token.equals("noMas")){ e++;
-                                System.out.println(error3+"=");
+                                System.out.println(error3+"= ident");
                             }
                         }
                         break;
@@ -377,7 +379,7 @@ public class Sintactico {
                             }
                         }else{
                             token = lex.lexicoR();
-                        Instrucciones();
+                            Instrucciones();
                         }
                     }else{
                         if(!token.equals("noMas")){ e++;
@@ -392,14 +394,7 @@ public class Sintactico {
             }
         }
         
-        Instrucciones();
-        token = lex.lexicoR();
-        if(!token.equals(";)")){
-            if(e>0){
-                e++;
-                System.out.println(error3+" ;)");
-            }
-        }
+        
         
     }
     
@@ -496,12 +491,14 @@ public class Sintactico {
                         AuxExpre();
                         AuxExpre2();
                         break;
-                    default:
-                        if(!token.equals("noMas")){ e++;
-                            System.out.println(error3+"+,-,*,/");
-                        }
-                        break;
+//                    default:
+//                        if(!token.equals("noMas")){ e++;
+//                            System.out.println(error3+"+,-,*,/");
+//                        }
+//                        break;
                 }
+            }else{
+                Instrucciones();
             }
         }      
     }

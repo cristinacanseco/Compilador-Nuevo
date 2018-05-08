@@ -182,10 +182,7 @@ public class Lexico {
                 
                 while (i < cadena.size()) {    
                     
-                    if(validarEspacio((char) this.cadena.get(i))){
-                        i++;
-                        cadenaV="";
-                    }  
+                     
                     if (this.bandera == 0) {
                         //Validar Variable
                         if (validarLetra((char) this.cadena.get(i))) {
