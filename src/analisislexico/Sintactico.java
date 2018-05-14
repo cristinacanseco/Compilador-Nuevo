@@ -142,7 +142,7 @@ public class Sintactico {
                 }else{
                     if(!token.equals("noMas")){
                         e++;
-                        System.out.println(error3+"Fijox");
+                        System.out.println(error3+"Fijo");
                     }
                 }
             }
@@ -208,7 +208,7 @@ public class Sintactico {
     
     public void Instrucciones(){
          if(!token.equals("soyVacio")){
-             if(!token.equals("Fin") && !token.equals("Kein") && !token.equals("Nein") && !token.equals(":)")){
+             if(!token.equals("Fin") && !token.equals("Kein") && !token.equals("Nein") && !token.equals(":)") && !token.equals("}")){
                 switch (token){
                     case "Itera":
                         token = lex.lexicoR();
@@ -345,15 +345,18 @@ public class Sintactico {
                         token = lex.lexicoR();
                         Instrucciones();
                         AuxInst();
-                        token = lex.lexicoR();
+                        
                         if(!token.equals("}")){
-                            System.out.println(error3+" }");
+                            if(!token.equals("noMas")){ e++;
+                                System.out.println(error3+" }");
+                            }
+                            
                         }
                         break;    
                     default:
                         if(!token.equals("noMas")){ e++;
                                 System.out.println(error2);
-                            }
+                        }
                         
                         break;
                 }
