@@ -49,6 +49,7 @@ public class TablaSimbolos {
         this.simbolos.add("&&");
         this.simbolos.add("}");
         this.simbolos.add("{");
+        this.simbolos.add(":)");
     }
     
     

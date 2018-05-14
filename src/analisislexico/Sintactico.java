@@ -208,7 +208,7 @@ public class Sintactico {
     
     public void Instrucciones(){
          if(!token.equals("soyVacio")){
-             if(!token.equals("Fin") && !token.equals("Kein") && !token.equals("Nein") && !token.equals(";)")){
+             if(!token.equals("Fin") && !token.equals("Kein") && !token.equals("Nein") && !token.equals(":)")){
                 switch (token){
                     case "Itera":
                         token = lex.lexicoR();
@@ -351,6 +351,9 @@ public class Sintactico {
                         }
                         break;    
                     default:
+                        if(!token.equals("noMas")){ e++;
+                                System.out.println(error2);
+                            }
                         
                         break;
                 }
