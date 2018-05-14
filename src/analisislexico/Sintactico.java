@@ -53,7 +53,7 @@ public class Sintactico {
                         //token = lex.lexicoR();
                         //System.out.println("3 "+token);
                         if(!token.equals(";)")){
-                            if(!token.equals("noMas")){
+                            if(token.equals("noMas")){
                                 System.out.println(error3 + ";)");
                                 e++;
                             }                                
@@ -119,7 +119,7 @@ public class Sintactico {
                             AuxFijo();
                             AuxFijo2();
                             if(!token.equals(";)")){
-                                if(!token.equals("noMas")){
+                                if(token.equals("noMas")){
                                     e++;
                                     System.out.println(error3+";) Fijo");
                                 }
@@ -344,8 +344,7 @@ public class Sintactico {
                      case "{":
                         token = lex.lexicoR();
                         Instrucciones();
-                        AuxInst();
-                        
+                        AuxInst();                     
                         if(!token.equals("}")){
                             if(!token.equals("noMas")){ e++;
                                 System.out.println(error3+" }");
