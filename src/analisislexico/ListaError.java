@@ -20,6 +20,8 @@ public class ListaError {
         this.error.add(new Error(1, "Error 1.  Cadena inválida, es una palabra reservada "));
         this.error.add(new Error(2, "Error 2.  No es un identificador válido "));
         this.error.add(new Error(3, "Error 3.  Se esperaba "));
+        this.error.add(new Error(4, "Error 4.  No se esperaban más instrucciones"));
+        this.error.add(new Error(5, "Error 5.  Programa incorrecto, debe contener por lo menos una instrucción"));
     }
 
     public ArrayList<Error> getError() {

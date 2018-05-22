@@ -9,18 +9,26 @@ package analisislexico;
  *
  * @author Cristy
  */
-public class Sintactico {
+public class Sintactico3 {
     Lexico lex;
     ListaError le = new ListaError();
     String error2 = le.getError().get(2).getMsj();
     String error3 = le.getError().get(3).getMsj();
+    String error4 = le.getError().get(4).getMsj();
     String token;
-    long tiempoT=0;
-    long startTime =0;
-    int e=0;
+    long tiempoT;
+    long startTime;
+    int e;
+    int llave;
+    int inst;
     
-    public Sintactico(Lexico lex){
+    public Sintactico3(Lexico lex){
         this.lex = lex;
+        llave =0;
+        inst = 0;
+        e =0;
+        tiempoT =0;
+        startTime =0;
     }
     
     public void Programa(){
@@ -201,18 +209,37 @@ public class Sintactico {
     public void AuxInst(){
         token = lex.lexicoR();
         if(!token.equals("}")){     
-            if(token.equals(";)")){
+            if(token.equals(":)")){
+                token = lex.lexicoR();
                 Instrucciones();
                 AuxInst();
             }
         }
     }
     
+    public void verSiHayMasInstrucciones(){
+        if(llave == 0 && inst>0){
+                e++;
+                System.out.println(error4);
+                calcularError();
+                System.exit(0);
+        }
+    }
+    
     public void Instrucciones(){
          if(!token.equals("soyVacio")){
+             
+             if(token.equals("noMas")){
+                e++;
+                System.out.println(error3 + "instrucciones");
+                calcularError();
+                System.exit(0);
+             }
+             
              if(!token.equals("Fin") && !token.equals("Kein") && !token.equals("Nein") && !token.equals(":)") && !token.equals("}")){
                 switch (token){
                     case "Itera":
+                        inst++;
                         token = lex.lexicoR();
                         if(token.equals("ident")){
                             token = lex.lexicoR();
@@ -228,13 +255,12 @@ public class Sintactico {
                                                 AuxFor();
                                                 AuxFor2();
                                                 if(!token.equals("Fin")){                                                  
-                                                    if(!token.equals("noMas")){
+                                                    
                                                         e++;
-                                                         System.out.println(error3+"Fin");
-                                                    }
+                                                        System.out.println(error3+"Fin");
+                                                    
                                                 }else{
-                                                    token = lex.lexicoR();
-                                                    Instrucciones();
+                                                    verSiHayMasInstrucciones();
                                                 }
                                             }else{
                                                 if(!token.equals("noMas")){ e++;
@@ -269,6 +295,7 @@ public class Sintactico {
                         }
                         break;
                     case "Funcion":
+                        inst++;
                         token = lex.lexicoR();
                         if(token.equals("ident")){
                             token = lex.lexicoR();
@@ -276,13 +303,9 @@ public class Sintactico {
                                 token = lex.lexicoR();
                                 Instrucciones();
                                 //token = lex.lexicoR();
-                                if(token.equals("Fin")){
-                                    token = lex.lexicoR();
-                                    Instrucciones();
-                                }else{
-                                    if(!token.equals("noMas")){ e++;
-                                        System.out.println(error3+"Fin");
-                                    }
+                                if(!token.equals("Fin")){
+                                   e++;
+                                    System.out.println(error3+"Fin");
                                 }
                             }else{
                                 if(!token.equals("noMas")){ e++;
@@ -296,16 +319,13 @@ public class Sintactico {
                         }
                         break;
                     case "Ven":
+                        inst++;
                         token = lex.lexicoR();
                         if(token.equals("ident")){
                             token = lex.lexicoR();
-                            if(token.equals(";)")){
-                                token = lex.lexicoR();
-                                Instrucciones();
-                            }else{
-                                if(!token.equals("noMas")){ e++;
-                                    System.out.println(error3+";) ven");
-                                }
+                            if(!token.equals(";)")){
+                                e++;
+                                System.out.println(error3+";) ven");
                             }
                         }else{   
                             if(!token.equals("noMas")){ e++;
@@ -314,26 +334,22 @@ public class Sintactico {
                         }
                         break;
                     case "Ja":
+                        inst++;
                         Condicion();
                         if(token.equals("to")){
                             token = lex.lexicoR();
                             Instrucciones();
                             AuxIf();
-                            token = lex.lexicoR();
-                            Instrucciones();
                         }
                         break;
                     case "ident":
+                        inst++;
                         token = lex.lexicoR();
                         if(token.equals("=")){
                             Expresion();
-                            if(token.equals(";)")){
-                                token = lex.lexicoR();
-                                Instrucciones();
-                            }else{
-                                if(!token.equals("noMas")){ e++;
+                            if(!token.equals(";)")){
+                                e++;
                                 System.out.println(error3+";)");
-                                }
                             }
                             
                         }else{
@@ -344,6 +360,8 @@ public class Sintactico {
                         break;
                         
                      case "{":
+                        inst++;
+                        llave++;
                         token = lex.lexicoR();
                         Instrucciones();
                         AuxInst();                     

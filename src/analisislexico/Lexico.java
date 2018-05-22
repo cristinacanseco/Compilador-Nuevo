@@ -46,8 +46,10 @@ public class Lexico {
                 //return cadenaE0 + cadenaV;    
                 return cadenaE0 + cadenaV;    
             }else{
-                if (!esPalabraReservada(cadenaV)) {       
-
+                if (!esPalabraReservada(cadenaV)){       
+                    if(cadenaV.equals("")){
+                        return "noMas";
+                    }else{   
                         if(validarNumero(cadenaV.charAt(0))){
                            //return cadenaV;
                            return "num";
@@ -55,11 +57,16 @@ public class Lexico {
                            if(cadenaV.equals("noMas")){
                                return "noMas";
                            }else{
-                           agregarVariables(cadenaV);
-                           return "ident";
+                                agregarVariables(cadenaV);
+                                if(validarLetra(cadenaV.charAt(0))){
+                                     return "ident";
+                                }else{
+                                     return cadenaV;
+                                }
                            }
-                           //return cadenaV;
                         }
+                    }
+                        
                 }else {
                     if(cadenaV.equals("")){
                         i++;
@@ -79,14 +86,12 @@ public class Lexico {
         cadenaV = ""; 
         
         if (i < this.cadena.size()) {
-            while(validarEspacio((char) this.cadena.get(i))){
+            while(i < this.cadena.size() && validarEspacio((char) this.cadena.get(i)) ){
                     i++;
                     cadenaV="";
-                }  
+            }  
             
-            if (!validarLetra((char) this.cadena.get(i)) && (!validarNumero((char) this.cadena.get(i)) && (!validarPunto((char) this.cadena.get(i)))  )) {      
-                  
-               
+            if (i < this.cadena.size() &&!validarLetra((char) this.cadena.get(i)) && (!validarNumero((char) this.cadena.get(i)) && (!validarPunto((char) this.cadena.get(i)))  )) {      
                 
                 //Validar ;)
                 if ((validarPuntoComa((char) this.cadena.get(i)))  ){
@@ -152,23 +157,33 @@ public class Lexico {
                                             }                                           
                                         }else{
                                             //Validar :)
-                                            if ( llaveAbre((char) this.cadena.get(i)) ){
+                                            if ((validar2Puntos((char) this.cadena.get(i)))  ){
                                                 cadenaV += this.cadena.get(i);
                                                 i++;
-                                                                                      
+                                                if ( i<this.cadena.size() && (validarGuino((char) this.cadena.get(i))) ){
+                                                    cadenaV += this.cadena.get(i);
+                                                    i++;
+                                                }
                                             }else{
-                                                if ( llaveCierra((char) this.cadena.get(i)) ){
+                                            
+                                                if ( llaveAbre((char) this.cadena.get(i)) ){
                                                     cadenaV += this.cadena.get(i);
                                                     i++;
-                                                }else{     
-                                                    cadenaV += this.cadena.get(i);
-                                                    i++;
-                                                    if (!esPalabraReservada(cadenaV)){ 
-                                                        e++;
-                                                    }   
+
+                                                }else{
+                                                    if ( llaveCierra((char) this.cadena.get(i)) ){
+                                                        cadenaV += this.cadena.get(i);
+                                                        i++;
+                                                    }else{     
+                                                        cadenaV += this.cadena.get(i);
+                                                        i++;
+                                                        if (!esPalabraReservada(cadenaV)){ 
+                                                            e++;
+                                                        }   
+                                                    }
                                                 }
                                             }
-                                           
+                                            
                                         }
                                     }
                                 }
@@ -181,30 +196,30 @@ public class Lexico {
             } else {
                 
                 while (i < cadena.size()) {    
-                    
-                     
+  
                     if (this.bandera == 0) {
                         //Validar Variable
-                        if (validarLetra((char) this.cadena.get(i))) {
+                        if ( i<cadena.size() && validarLetra((char) this.cadena.get(i))) {
                             bandera++;
                             v++;
                             cadenaV += this.cadena.get(i);
                             i++;
                         } else {
                             //Validar Dígito
-                            if (validarNumero((char) this.cadena.get(i))) {
+                            if ( i<cadena.size() && validarNumero((char) this.cadena.get(i)) ) {
                                 bandera++;
                                 d++;
                                 cadenaV += this.cadena.get(i);
                                 i++;
                             } else {
-                                if(validarEspacio((char) this.cadena.get(i))){
+                                if( i<cadena.size() && validarEspacio((char) this.cadena.get(i)) ){
                                     i++;
                                     break;
                                 }else{
-                                //Es punto para entrar aquí
+                                    //Es punto para entrar aquí
                                     cadenaV = "" + ((char) this.cadena.get(i));
                                     i++;
+                                    break;
                                 }
                                 //break;
                             }
@@ -212,7 +227,7 @@ public class Lexico {
                     } else {
                         //Validar variable
                         if (v > 0) {
-                            if (validarLetra((char) this.cadena.get(i)) || validarNumero((char) this.cadena.get(i))) {
+                            if ( i<cadena.size() && (validarLetra((char) this.cadena.get(i)) || validarNumero((char) this.cadena.get(i)))) {
                                 cadenaV += this.cadena.get(i);
                                 i++;
                             }
@@ -222,30 +237,30 @@ public class Lexico {
                             if (esPalabraReservada(cadenaV)){ 
                                 break;
                             }
-                            if(validarEspacio((char) this.cadena.get(i))){
+                            if( i<cadena.size() && validarEspacio((char) this.cadena.get(i)) ){
                                 i++;
                                 break;
                             }
                         } else {
                             //Validar digito
                             if (d > 0) {
-                                if (validarPunto((char) this.cadena.get(i)) && p == 0) {
+                                if (  i<cadena.size() &&validarPunto((char) this.cadena.get(i)) && p == 0  ) {
                                     p++;
                                     cadenaV += this.cadena.get(i);
                                     i++;
                                 }
-                                if (validarNumero((char) this.cadena.get(i)) && p == 0) {
+                                if ( i<cadena.size() && validarNumero((char) this.cadena.get(i)) && p == 0) {
                                     cadenaV += this.cadena.get(i);
                                     i++;
                                 }
-                                if (validarNumero((char) this.cadena.get(i)) && p == 1) {
+                                if (i <cadena.size() && validarNumero((char) this.cadena.get(i)) && p == 1  ) {
                                     cadenaV += this.cadena.get(i);
                                     i++;
                                 }
-                                if ((i < cadena.size()) && (!validarNumero((char) this.cadena.get(i)) && (!validarPunto((char) this.cadena.get(i))))) {
+                                if ((i < cadena.size()) && (!validarNumero((char) this.cadena.get(i)) && (!validarPunto((char) this.cadena.get(i)))) ) {
                                     break;
                                 }
-                                if(validarEspacio((char) this.cadena.get(i))){
+                                if( i<cadena.size() && validarEspacio((char) this.cadena.get(i))){
                                     i++;
                                     break;
                                 }

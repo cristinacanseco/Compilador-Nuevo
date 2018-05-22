@@ -8,6 +8,9 @@ package compilador;
 import analisislexico.AbrirArchivo;
 import analisislexico.Lexico;
 import analisislexico.Sintactico;
+import analisislexico.Sintactico2;
+import analisislexico.Sintactico3;
+import analisislexico.Sintactico4;
 
 /**
  *
@@ -15,12 +18,10 @@ import analisislexico.Sintactico;
  */
 public class Compilador {
     
-    public static void main(String args[]){
-        
+    public static void main(String args[]){       
         AbrirArchivo abrirA = new AbrirArchivo();
-        Sintactico sin = new Sintactico(new Lexico(abrirA.abrirInstancia()));
+        Sintactico4 sin = new Sintactico4(new Lexico(abrirA.abrirInstancia()));
         sin.Programa();
-        
     }
     
 }
