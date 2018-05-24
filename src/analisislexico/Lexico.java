@@ -40,7 +40,7 @@ public class Lexico {
             return "soyVacio";
         }else{
             crearCadena();    
-            System.out.println("La cadena es: " +cadenaV);
+            //System.out.println("La cadena es: " +cadenaV);
             if(e!=0){
                 e=0;
                 //return cadenaE0 + cadenaV;    

@@ -484,7 +484,7 @@ public class Sintactico4 {
         if(!palabras.get(pos).equals("noMas")){
             if(!palabras.get(pos).equals("to")){
                 Condicion();
-                AuxCond4();
+                AuxCond3();
             }
         }
         
