@@ -25,11 +25,13 @@ public class Lexico {
     String cadenaE1 = le.getError().get(1).getMsj();
     String cadenaE0 = le.getError().get(0).getMsj();
     public ArrayList<Variable> variable = new ArrayList<Variable>();
-    ListaVariables lv = new ListaVariables();
     public int id=0;
     
+    public boolean esVariableAun;
+    
     public Lexico(ArrayList<Character> lista) {
-        this.cadena = lista;   
+        this.cadena = lista;
+        this.esVariableAun = true;
     }
     
     public Lexico (){}
@@ -56,10 +58,24 @@ public class Lexico {
                         }else{
                            if(cadenaV.equals("noMas")){
                                return "noMas";
-                           }else{
-                                agregarVariables(cadenaV);
+                           }else{         
                                 if(validarLetra(cadenaV.charAt(0))){
-                                     return "ident";
+                                    if(esVariableAun){
+                                        String mensaje = agregarVariables(cadenaV);
+                                        if(!mensaje.equals("exito")){
+                                            return "repetido";
+                                        }else{
+                                            return "ident";
+                                        }
+                                       
+                                    }else{
+                                        if(buscarPalabraEnVariables(cadenaV)){
+                                            return "ident";
+                                        }else{
+                                            return "noEncontrada";
+                                        }
+                                    }
+                                    
                                 }else{
                                      return cadenaV;
                                 }
@@ -68,12 +84,15 @@ public class Lexico {
                     }
                         
                 }else {
+                    
                     if(cadenaV.equals("")){
                         i++;
                         crearCadena();
                     }else{
                     //return cadenaE1 + cadenaV;
-                        return cadenaV;
+                    if(cadenaV.equals("Fijo") || cadenaV.equals("{") | cadenaV.equals("Itera") | cadenaV.equals("Ja") | cadenaV.equals("Funcion") | cadenaV.equals("Ven")   )
+                        setEsVariableAun(false);
+                    return cadenaV;
                     }
                 }
             }
@@ -419,9 +438,44 @@ public class Lexico {
 
     }
 
-    public void agregarVariables(String cadena){       
-        lv.agregarVariable(id, cadena);
-        id++;
+    public String agregarVariables(String cadena){   
+        int cont=0;
+        
+        for (int h= 0; h<variable.size(); h++){
+            if(variable.get(h).getVariable().equals(cadena))
+                cont++;
+        }
+        
+        if (cont == 0){
+            variable.add(new Variable(id,"ident", cadena, "tipo"));
+            id++;
+            return "exito";
+        }else{
+            return "invalido";
+        }
+    }
+
+    public ArrayList<Variable> getVariable() {
+        return variable;
+    }
+
+    public boolean isEsVariableAun() {
+        return esVariableAun;
+    }
+
+    public void setEsVariableAun(boolean esVariableAun) {
+        this.esVariableAun = esVariableAun;
+    }
+
+    private boolean buscarPalabraEnVariables(String cadenaV) {
+       
+        for(int p=0; p<variable.size(); p++){
+            if(variable.get(p).getVariable().equals(cadenaV)){
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     

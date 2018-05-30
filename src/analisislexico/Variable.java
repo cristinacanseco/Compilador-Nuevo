@@ -11,33 +11,44 @@ package analisislexico;
  */
 public class Variable {
     public int id;
+    public String valor;
     public String variable;
+    public String tipo;
+    
     
     public Variable(){
         this.id=-1;
         this.variable="";
+        this.tipo = "";
+        this.valor = "ident";
     }
     
-    public Variable(int id, String variable){
+    public Variable(int id, String valor, String variable, String tipo){
        this.id = id;
         this.variable = variable;
+        this.tipo = tipo;
+        this.valor = valor;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-    
     public String getVariable() {
         return variable;
     }
 
-    public void setVariable(String variable) {
-        this.variable = variable;
+    public String getTipo() {
+        return tipo;
+    } 
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getValor() {
+        return valor;
     }
     
-    
+        
 }

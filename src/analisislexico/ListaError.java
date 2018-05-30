@@ -22,6 +22,8 @@ public class ListaError {
         this.error.add(new Error(3, "Error 3.  Se esperaba "));
         this.error.add(new Error(4, "Error 4.  No se esperaban más instrucciones"));
         this.error.add(new Error(5, "Error 5.  Programa incorrecto, debe contener por lo menos una instrucción"));
+        this.error.add(new Error(6, "Error 6.  Se encontró una variable repetida "));
+        this.error.add(new Error(7, "Error 7.  No se ha declarado la variable "));
     }
 
     public ArrayList<Error> getError() {

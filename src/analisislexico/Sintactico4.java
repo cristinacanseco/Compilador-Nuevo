@@ -18,6 +18,8 @@ public class Sintactico4 {
     String error3 = le.getError().get(3).getMsj();
     String error4 = le.getError().get(4).getMsj();
     String error5 = le.getError().get(5).getMsj();
+    String error6 = le.getError().get(6).getMsj();
+    String error7 = le.getError().get(7).getMsj();
    
     ArrayList<String> palabras;
     int pos, error, llave, inst, instPermiso;
@@ -72,7 +74,7 @@ public class Sintactico4 {
                 token = lex.lexicoR();
             }
             palabras.add("noMas"); 
-        }
+        }      
     }
 
     public ArrayList<String> getPalabras() {
@@ -93,7 +95,11 @@ public class Sintactico4 {
                         errorEncontrado(error3, ";)");
                     }
                 }else{
-                    errorEncontrado(error3, "un identificador");
+                    if(palabras.get(pos).equals("repetido")){
+                        errorEncontrado(error6, "");
+                    }else{
+                        errorEncontrado(error3, "un identificador");
+                    }
                 }
             }
         }else{
@@ -117,7 +123,11 @@ public class Sintactico4 {
                    pos++;
                    AuxVar();
                }else{
-                    errorEncontrado(error3, "un identificador");
+                   if(palabras.get(pos).equals("repetido")){
+                        errorEncontrado(error6, "");
+                    }else{
+                        errorEncontrado(error3, "un identificador");
+                    }
                }
             }else{
                 errorEncontrado(error3, ",");
@@ -146,7 +156,11 @@ public class Sintactico4 {
                             errorEncontrado(error3, "=");
                         }
                     }else{
-                        errorEncontrado(error3, "identificador válido");
+                        if(palabras.get(pos).equals("noEncontrada")){
+                            errorEncontrado(error7,"");
+                        }else{
+                            errorEncontrado(error3, "identificador válido");
+                        }
                     }
                 }else{
                     errorEncontrado(error3, "Fijo");
@@ -159,7 +173,11 @@ public class Sintactico4 {
 
     private void AuxFijo() {
         if(pos < palabras.size() && !palabras.get(pos).equals("ident") && !palabras.get(pos).equals("num") ){
-            errorEncontrado(error3, "identificador o número válido");                    
+            if(palabras.get(pos).equals("noEncontrada")){
+                 errorEncontrado(error7,"");
+            }else{
+                errorEncontrado(error3, "identificador o número válido");
+            }
         }else{
             pos++;
         }
@@ -251,7 +269,11 @@ public class Sintactico4 {
                             }
                         }else{
                             if(!palabras.get(pos).equals("noMas")){ 
-                                errorEncontrado(error3, "identificador válido");
+                                if(palabras.get(pos).equals("noEncontrada")){
+                                    errorEncontrado(error7,"");
+                                }else{
+                                    errorEncontrado(error3, "identificador válido");
+                                }
                             }
                         }
                         break;
@@ -287,7 +309,11 @@ public class Sintactico4 {
                             }
                         }else{
                             if(!palabras.get(pos).equals("noMas")){
-                                errorEncontrado(error3, "identificador válido");
+                                if(palabras.get(pos).equals("noEncontrada")){
+                                    errorEncontrado(error7,"");
+                                }else{
+                                    errorEncontrado(error3, "identificador válido");
+                                }
                             }
                         }
                         break;
@@ -313,7 +339,11 @@ public class Sintactico4 {
                             }
                         }else{   
                             if(!palabras.get(pos).equals("noMas")){ 
-                                errorEncontrado(error3, "identificador válido");
+                                if(palabras.get(pos).equals("noEncontrada")){
+                                    errorEncontrado(error7,"");
+                                }else{
+                                    errorEncontrado(error3, "identificador válido");
+                                }
                             }
                         }
                         break;

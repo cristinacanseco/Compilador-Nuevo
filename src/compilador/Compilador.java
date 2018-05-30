@@ -7,8 +7,6 @@ package compilador;
 
 import analisislexico.AbrirArchivo;
 import analisislexico.Lexico;
-import analisislexico.Sintactico;
-import analisislexico.Sintactico3;
 import analisislexico.Sintactico4;
 
 /**
