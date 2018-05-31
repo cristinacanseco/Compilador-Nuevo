@@ -26,12 +26,15 @@ public class Lexico {
     String cadenaE0 = le.getError().get(0).getMsj();
     public ArrayList<Variable> variable = new ArrayList<Variable>();
     public int id=0;
+    public String tipo;
+    Variable aux;
     
     public boolean esVariableAun;
     
     public Lexico(ArrayList<Character> lista) {
         this.cadena = lista;
         this.esVariableAun = true;
+        this.tipo = "";
     }
     
     public Lexico (){}
@@ -90,10 +93,15 @@ public class Lexico {
                         crearCadena();
                     }else{
                     //return cadenaE1 + cadenaV;
-                    if(cadenaV.equals("Fijo") || cadenaV.equals("{") | cadenaV.equals("Itera") | cadenaV.equals("Ja") | cadenaV.equals("Funcion") | cadenaV.equals("Ven")   )
-                        setEsVariableAun(false);
-                    return cadenaV;
+                        if(cadenaV.equals("Fijo") || cadenaV.equals("{") | cadenaV.equals("Itera") | cadenaV.equals("Ja") | cadenaV.equals("Funcion") | cadenaV.equals("Ven")   )
+                            setEsVariableAun(false);
+                        
+                        if(cadenaV.equals("Ent") || cadenaV.equals("Dec") || cadenaV.equals("Let") )
+                            this.tipo  = cadenaV;
+                        
+                        return cadenaV;
                     }
+                
                 }
             }
         }
@@ -447,7 +455,7 @@ public class Lexico {
         }
         
         if (cont == 0){
-            variable.add(new Variable(id,"ident", cadena, "tipo"));
+            variable.add(new Variable(id,"ident", cadena, this.tipo));
             id++;
             return "exito";
         }else{
@@ -471,6 +479,7 @@ public class Lexico {
        
         for(int p=0; p<variable.size(); p++){
             if(variable.get(p).getVariable().equals(cadenaV)){
+                this.aux = new Variable(variable.get(p).getId(), variable.get(p).getValor(), variable.get(p).getVariable(), variable.get(p).getTipo());
                 return true;
             }
         }

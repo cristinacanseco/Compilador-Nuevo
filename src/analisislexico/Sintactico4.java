@@ -38,6 +38,7 @@ public class Sintactico4 {
         this.llave = 0;
         generarPalabras();
         System.out.println("");
+      
     }
     
     public void Programa(){
@@ -141,6 +142,8 @@ public class Sintactico4 {
                 if(pos < palabras.size() && palabras.get(pos).equals("Fijo") ){
                     pos++;
                     if(pos < palabras.size() && palabras.get(pos).equals("ident") ){
+                    //if(pos < palabras.size() && validarLetra(palabras.get(pos))){
+                        
                         pos++;
                         if(pos < palabras.size() && palabras.get(pos).equals("=") ){
                             pos++;
