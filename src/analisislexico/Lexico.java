@@ -190,6 +190,11 @@ public class Lexico {
                     cadenaV="";
             }  
             
+            while(i < this.cadena.size() && tabulador((char) this.cadena.get(i)) ){
+                    i++;
+                    cadenaV="";
+            }  
+            
             if (i < this.cadena.size() &&!validarLetra((char) this.cadena.get(i)) && (!validarNumero((char) this.cadena.get(i)) && (!validarPunto((char) this.cadena.get(i)))  )) {      
                 
                 //Validar ;)
@@ -494,6 +499,14 @@ public class Lexico {
     
     public boolean llaveCierra(char c) {
         if (c == 125) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean tabulador(char c) {
+        if (c == 9) {
             return true;
         } else {
             return false;

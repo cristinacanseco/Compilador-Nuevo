@@ -29,10 +29,10 @@ public class Sintactico4 {
     ArrayList<String> palabras,identificadores;
     ArrayList<Variable> variables, funciones;
     
-    int pos, error, llave, inst, instPermiso, numTipo, ip;
+    int pos, error, llave, inst, instPermiso, numTipo, ip, posTipo;
     long tiempoT, startTime;
     
-    String tipo1, tipo2;
+    String tipo1, tipo2, tipoIdent;
     
     public Sintactico4(Lexico lex){
         this.lex = lex;
@@ -42,8 +42,10 @@ public class Sintactico4 {
         this.funciones = new ArrayList<>();
         this.pos = 0;
         this.ip = 0;
+        this.posTipo = 0;
         this.tipo1 = "";
         this.tipo2 = "";
+        this.tipoIdent = "";
         this.error =0;
         this.tiempoT =0;
         this.startTime =0;
@@ -410,7 +412,9 @@ public class Sintactico4 {
                         break;
                     case "ident":
                         numTipo = 0;
-                        comparaTipo();                       
+                        comparaTipo(); 
+                        tipoIdent = tipo1;
+                        posTipo = pos;
                         inst++;
                         pos++;
                         if(palabras.get(pos).equals("=")){
@@ -577,16 +581,15 @@ public class Sintactico4 {
     }
     
     public void AuxExpre(){
+       numTipo = 1;
         if(palabras.get(pos).equals("num") || palabras.get(pos).equals("ident")){
-            comparaTipo();
             if(palabras.get(pos).equals("ident")){
                 comparaTipo();
-                if(!this.tipo1.equals(this.tipo2) && (!this.tipo1.equals("Dec") || !this.tipo2.equals("Ent")) ){
-                    errorEncontrado(error8, identificadores.get(pos-2) + " y " + identificadores.get(pos) );
+                if( this.tipoIdent.equals("Let") ||  this.tipo2.equals("Let")   ){
+                    errorEncontrado(error8, identificadores.get(posTipo) + " y " + identificadores.get(pos) );
                 }else{           
                     this.tipo1 = "";
-                    this.tipo2 = "";
-                    
+                    this.tipo2 = "";                   
                 }
             }
             
@@ -596,7 +599,7 @@ public class Sintactico4 {
                     this.tipo1 = "";
                     this.tipo2 = "";
                 }else{
-                    errorEncontrado(error8, identificadores.get(pos-2) + " y " + identificadores.get(pos));               
+                    errorEncontrado(error8, identificadores.get(posTipo) + " y " + identificadores.get(pos));               
                 }
             }
             
@@ -604,7 +607,6 @@ public class Sintactico4 {
         else{
             if(palabras.get(pos).equals("(")){
                 Expresion();
-                //token = lex.lexicoR();
                 if(!palabras.get(pos).equals(")")){
                     errorEncontrado(error3, ")");
                    
@@ -687,19 +689,23 @@ public class Sintactico4 {
             }else{
                 pos++;
             }
+            
         }
     }
 
     private void llamaALaFuncion() {
         int cont =0;
     
+        if(funciones.isEmpty())
+            errorEncontrado(error10, identificadores.get(pos));
+        
         for(int k=0; k<funciones.size(); k++ ){
             if(funciones.get(k).getVariable().equals(identificadores.get(pos)))
                 cont++;
         }
         
         if(cont == 0){
-            errorEncontrado(error10, variables.get(pos).getVariable());
+            errorEncontrado(error10, identificadores.get(pos));
         }
     }
     
