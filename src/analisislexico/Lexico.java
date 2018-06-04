@@ -109,9 +109,81 @@ public class Lexico {
         
     }
     
+    
+     public String lexicoR2(){
+        //Comprobar que la caden no sea una palabra reservada
+        if(cadena.isEmpty()){
+            return "soyVacio";
+        }else{
+            crearCadena();    
+            //System.out.println("La cadena es: " +cadenaV);
+            if(e!=0){
+                e=0;
+                //return cadenaE0 + cadenaV;    
+                return cadenaE0 + cadenaV;    
+            }else{
+                if (!esPalabraReservada(cadenaV)){       
+                    if(cadenaV.equals("")){
+                        return "noMas";
+                    }else{   
+                        if(validarNumero(cadenaV.charAt(0))){
+                           //return cadenaV;
+                           return "num";
+                        }else{
+                           if(cadenaV.equals("noMas")){
+                               return "noMas";
+                           }else{         
+                                if(validarLetra(cadenaV.charAt(0))){
+                                    if(esVariableAun){
+                                        String mensaje = agregarVariables(cadenaV);
+                                        if(!mensaje.equals("exito")){
+                                            return "repetido";
+                                        }else{
+                                            return cadenaV;
+                                        }
+                                       
+                                    }else{
+                                        if(buscarPalabraEnVariables(cadenaV)){
+                                            return cadenaV;
+                                        }else{
+                                            return cadenaV;
+                                        }
+                                    }
+                                    
+                                }else{
+                                     return cadenaV;
+                                }
+                           }
+                        }
+                    }
+                        
+                }else {
+                    
+                    if(cadenaV.equals("")){
+                        i++;
+                        crearCadena();
+                    }else{
+                    //return cadenaE1 + cadenaV;
+                        if(cadenaV.equals("Fijo") || cadenaV.equals("{") | cadenaV.equals("Itera") | cadenaV.equals("Ja") | cadenaV.equals("Funcion") | cadenaV.equals("Ven")   )
+                            setEsVariableAun(false);
+                        
+                        if(cadenaV.equals("Ent") || cadenaV.equals("Dec") || cadenaV.equals("Let") )
+                            this.tipo  = cadenaV;
+                        
+                        return cadenaV;
+                    }
+                
+                }
+            }
+        }
+        return null;
+        
+    }
+    
+    
     public void crearCadena() {
         cadenaV = ""; 
-        
+                
         if (i < this.cadena.size()) {
             while(i < this.cadena.size() && validarEspacio((char) this.cadena.get(i)) ){
                     i++;
@@ -298,6 +370,7 @@ public class Lexico {
             }
         } else {
             cadenaV = "noMas";
+            i=0;
         }
         bandera = 0;
         v = 0;
@@ -475,17 +548,14 @@ public class Lexico {
         this.esVariableAun = esVariableAun;
     }
 
-    private boolean buscarPalabraEnVariables(String cadenaV) {
-       
+    private boolean buscarPalabraEnVariables(String cadenaV) {       
         for(int p=0; p<variable.size(); p++){
             if(variable.get(p).getVariable().equals(cadenaV)){
                 this.aux = new Variable(variable.get(p).getId(), variable.get(p).getValor(), variable.get(p).getVariable(), variable.get(p).getTipo());
                 return true;
             }
-        }
-        
+        }    
         return false;
-    }
-    
+    }  
     
 }

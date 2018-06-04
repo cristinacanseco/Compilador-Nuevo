@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class Sintactico4 {
     Lexico lex;
+    
     ListaError le = new ListaError();
     String error2 = le.getError().get(2).getMsj();
     String error3 = le.getError().get(3).getMsj();
@@ -20,23 +21,39 @@ public class Sintactico4 {
     String error5 = le.getError().get(5).getMsj();
     String error6 = le.getError().get(6).getMsj();
     String error7 = le.getError().get(7).getMsj();
+    String error8 = le.getError().get(8).getMsj();
+    String error9 = le.getError().get(9).getMsj();
+    String error10 = le.getError().get(10).getMsj();
+    String error11 = le.getError().get(11).getMsj();
    
-    ArrayList<String> palabras;
-    int pos, error, llave, inst, instPermiso;
-    long tiempoT;
-    long startTime;
+    ArrayList<String> palabras,identificadores;
+    ArrayList<Variable> variables, funciones;
+    
+    int pos, error, llave, inst, instPermiso, numTipo, ip;
+    long tiempoT, startTime;
+    
+    String tipo1, tipo2;
     
     public Sintactico4(Lexico lex){
         this.lex = lex;
         this.palabras = new ArrayList();
+        this.identificadores = new ArrayList<>();
+        this.variables = new ArrayList<>();
+        this.funciones = new ArrayList<>();
         this.pos = 0;
+        this.ip = 0;
+        this.tipo1 = "";
+        this.tipo2 = "";
         this.error =0;
         this.tiempoT =0;
         this.startTime =0;
         this.inst =0;
         this.instPermiso = 0;
         this.llave = 0;
+        this.numTipo = 0;
         generarPalabras();
+        generarIdentificadores();
+        this.variables = lex.getVariable();
         System.out.println("");
       
     }
@@ -78,6 +95,19 @@ public class Sintactico4 {
         }      
     }
 
+     private void generarIdentificadores() {
+        String token = lex.lexicoR2();
+        if(token.equals("soyVacio")){
+            identificadores.add(token);
+        }else{
+            while(!token.equals("noMas")){  
+                identificadores.add(token);  
+                token = lex.lexicoR2();
+            }
+            identificadores.add("noMas"); 
+        }      
+    }
+    
     public ArrayList<String> getPalabras() {
         return palabras;
     }
@@ -142,8 +172,7 @@ public class Sintactico4 {
                 if(pos < palabras.size() && palabras.get(pos).equals("Fijo") ){
                     pos++;
                     if(pos < palabras.size() && palabras.get(pos).equals("ident") ){
-                    //if(pos < palabras.size() && validarLetra(palabras.get(pos))){
-                        
+                        comparaTipo();
                         pos++;
                         if(pos < palabras.size() && palabras.get(pos).equals("=") ){
                             pos++;
@@ -182,6 +211,29 @@ public class Sintactico4 {
                 errorEncontrado(error3, "identificador o número válido");
             }
         }else{
+           
+            if(palabras.get(pos).equals("ident")){
+                comparaTipo();
+                if(!this.tipo1.equals(this.tipo2)){
+                    if((this.tipo1.equals("Dec") && this.tipo2.equals("Ent"))  || (this.tipo2.equals("Dec") && this.tipo1.equals("Ent")) ){}else{
+                        errorEncontrado(error8, identificadores.get(pos-2) + " y " + identificadores.get(pos) );
+                    }
+                }else{                    
+                    this.tipo1 = "";
+                    this.tipo2 = "";                    
+                }
+            }
+            
+            if(palabras.get(pos).equals("num")){
+                if(this.tipo1.equals("Dec") || this.tipo1.equals("Ent")){
+                    numTipo = 0;
+                    this.tipo1 = "";
+                    this.tipo2 = "";
+                }else{
+                    errorEncontrado(error8, identificadores.get(pos-2) + " y " + identificadores.get(pos));               
+                }
+            }
+            
             pos++;
         }
     }
@@ -192,6 +244,8 @@ public class Sintactico4 {
                 if(pos < palabras.size() && palabras.get(pos).equals(",")){
                     pos++;
                     if(pos < palabras.size() && palabras.get(pos).equals("ident")){
+                        comparaTipo();
+                        
                         pos++;
                         if(pos < palabras.size() && palabras.get(pos).equals("=")){
                             pos++;
@@ -218,6 +272,7 @@ public class Sintactico4 {
                         inst++;
                         pos++;
                         if(pos < palabras.size() && palabras.get(pos).equals("ident")){
+                            esIdentificador();
                             pos++;
                             if(pos < palabras.size() && palabras.get(pos).equals("=")){
                                 pos++;
@@ -235,15 +290,16 @@ public class Sintactico4 {
                                                         errorEncontrado(error3, "Fin Itera");
                                                     }
                                                 }else{
-                                                    if(inst>0 && llave==0 && instPermiso ==0 &&!palabras.get(pos+1).equals("noMas")){
-                                                        errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                                                    }else{
-                                                        if(llave==0 && instPermiso == 0 && !palabras.get(pos+1).equals("noMas")){
-                                                            errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                                                        }else{
-                                                            pos++;
-                                                        }
-                                                    }
+//                                                    if(inst>0 && llave==0 && instPermiso ==0 &&!palabras.get(pos+1).equals("noMas")){
+//                                                        errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
+//                                                    }else{
+//                                                        if(llave==0 && instPermiso == 0 && !palabras.get(pos+1).equals("noMas")){
+//                                                            errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
+//                                                        }else{
+//                                                            pos++;
+//                                                        }
+//                                                    }
+                                                    posibleError();
                                                 }
                                             }else{
                                                 if(!palabras.get(pos).equals("noMas")){ 
@@ -283,7 +339,8 @@ public class Sintactico4 {
                     case "Funcion":
                         inst++;
                         pos++;
-                        if(palabras.get(pos).equals("ident")){
+                        if(palabras.get(pos).equals("noEncontrada")){
+                            agregarFuncion(identificadores.get(pos));
                             pos++;
                             if(palabras.get(pos).equals(":")){
                                 pos++;
@@ -291,19 +348,11 @@ public class Sintactico4 {
                                 Instrucciones();
                                 //pos++;
                                 if(palabras.get(pos).equals("Fin")){
-                                    if(inst>0 && llave==0 && instPermiso ==0 &&!palabras.get(pos+1).equals("noMas")){
-                                        errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                                       }else{
-                                        if(llave==0 && instPermiso == 0 && !palabras.get(pos+1).equals("noMas")){
-                                            errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                                        }else{
-                                            pos++;
-                                        }
-                                    }
+                                    posibleError();                                 
                                 }else{
-                                    if(!palabras.get(pos).equals("noMas")){ 
+                                    if(!palabras.get(pos).equals("noMas")) 
                                         errorEncontrado(error3, "Fin");
-                                    }
+                                    
                                 }
                             }else{
                                 if(!palabras.get(pos).equals("noMas")){
@@ -312,8 +361,8 @@ public class Sintactico4 {
                             }
                         }else{
                             if(!palabras.get(pos).equals("noMas")){
-                                if(palabras.get(pos).equals("noEncontrada")){
-                                    errorEncontrado(error7,"");
+                                if(palabras.get(pos).equals("ident")){
+                                    errorEncontrado(error2,"");
                                 }else{
                                     errorEncontrado(error3, "identificador válido");
                                 }
@@ -323,18 +372,12 @@ public class Sintactico4 {
                     case "Ven":
                         inst++;
                         pos++;
-                        if(palabras.get(pos).equals("ident")){
+                        if(palabras.get(pos).equals("noEncontrada")){
+                            llamaALaFuncion();
                             pos++;
                             if(palabras.get(pos).equals(";)")){
-                                if(inst>0 && llave==0 && instPermiso ==0 &&!palabras.get(pos+1).equals("noMas")){
-                                    errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                                }else{
-                                    if(llave==0 && instPermiso == 0 && !palabras.get(pos+1).equals("noMas")){
-                                        errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                                    }else{
-                                        pos++;
-                                    }
-                                }
+                                posibleError();
+                                
                             }else{
                                 if(!palabras.get(pos).equals("noMas")){ 
                                     errorEncontrado(error3, ";) ven");
@@ -342,8 +385,8 @@ public class Sintactico4 {
                             }
                         }else{   
                             if(!palabras.get(pos).equals("noMas")){ 
-                                if(palabras.get(pos).equals("noEncontrada")){
-                                    errorEncontrado(error7,"");
+                                if(palabras.get(pos).equals("ident")){
+                                    errorEncontrado(error3,"una función");
                                 }else{
                                     errorEncontrado(error3, "identificador válido");
                                 }
@@ -366,20 +409,14 @@ public class Sintactico4 {
                         }
                         break;
                     case "ident":
+                        numTipo = 0;
+                        comparaTipo();                       
                         inst++;
                         pos++;
                         if(palabras.get(pos).equals("=")){
                             Expresion();
                             if(palabras.get(pos).equals(";)")){
-                                if(inst>0 && llave==0 && instPermiso ==0 &&!palabras.get(pos+1).equals("noMas")){
-                                    errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                                }else{
-                                    if(llave==0 && instPermiso==0 && !palabras.get(pos+1).equals("noMas") ){
-                                        errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                                    }else{
-                                        pos++;
-                                    }
-                                }
+                                posibleError();
                             }else{
                                 if(!palabras.get(pos).equals("noMas")){
                                     errorEncontrado(error3, ";)");
@@ -447,20 +484,11 @@ public class Sintactico4 {
                     if(palabras.get(pos).equals("to")){
                       pos++;
                       instPermiso++;
-                        Instrucciones();
-                        //token = lex.lexicoR();
+                      Instrucciones();
                         if(!palabras.get(pos).equals("Nein")){
                             errorEncontrado(error3,"Nein");                                                       
-                        }else{
-                             if(inst>0 && llave==0 && instPermiso ==0 &&!palabras.get(pos+1).equals("noMas")){
-                                errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                            }else{
-                                if(llave==0 && instPermiso == 0 && !palabras.get(pos+1).equals("noMas")){
-                                    errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
-                                }else{
-                                    pos++;
-                                }
-                            }
+                        }else{                           
+                             posibleError();
                         }
                     }else{
                         if(!palabras.get(pos).equals("noMas")){ 
@@ -480,14 +508,31 @@ public class Sintactico4 {
     }
     
     public void Condicion(){
-        AuxFijo();
+        AuxCond();
         AuxCond2();
-        AuxFijo();
+        AuxCond();
         AuxCond3();
     }
     
-    public void AuxCond2(){
-        
+    private void AuxCond() {
+        if(pos < palabras.size() && !palabras.get(pos).equals("ident") && !palabras.get(pos).equals("num") ){
+            if(palabras.get(pos).equals("noEncontrada")){
+                 errorEncontrado(error7,"");
+            }else{
+                errorEncontrado(error3, "identificador o número válido");
+            }
+        }else{
+           
+            if(palabras.get(pos).equals("ident")){
+                esIdentificador();
+            }
+            
+            pos++;
+        }
+    }
+    
+    
+    public void AuxCond2(){        
         if(!palabras.get(pos).equals("<") && !palabras.get(pos).equals(">") && !palabras.get(pos).equals(">=") && !palabras.get(pos).equals("<=") && !palabras.get(pos).equals("!=") && !palabras.get(pos).equals("==")){
             if(!palabras.get(pos).equals("noMas")){
                 errorEncontrado(error3, "<, >, <=, >=, !=, ==");
@@ -532,7 +577,30 @@ public class Sintactico4 {
     }
     
     public void AuxExpre(){
-        if(palabras.get(pos).equals("num") || palabras.get(pos).equals("ident")){}
+        if(palabras.get(pos).equals("num") || palabras.get(pos).equals("ident")){
+            comparaTipo();
+            if(palabras.get(pos).equals("ident")){
+                comparaTipo();
+                if(!this.tipo1.equals(this.tipo2) && (!this.tipo1.equals("Dec") || !this.tipo2.equals("Ent")) ){
+                    errorEncontrado(error8, identificadores.get(pos-2) + " y " + identificadores.get(pos) );
+                }else{           
+                    this.tipo1 = "";
+                    this.tipo2 = "";
+                    
+                }
+            }
+            
+            if(palabras.get(pos).equals("num")){
+                if(this.tipo1.equals("Dec") || this.tipo1.equals("Ent")){
+                    numTipo = 0;
+                    this.tipo1 = "";
+                    this.tipo2 = "";
+                }else{
+                    errorEncontrado(error8, identificadores.get(pos-2) + " y " + identificadores.get(pos));               
+                }
+            }
+            
+        }
         else{
             if(palabras.get(pos).equals("(")){
                 Expresion();
@@ -582,4 +650,78 @@ public class Sintactico4 {
             }
         }
     }
+
+    private void comparaTipo() {
+        numTipo++;
+        String tipo = "";
+         if(numTipo > 2)
+            numTipo = 1;
+         
+        for(int i=0; i<this.variables.size(); i++){
+            if(identificadores.get(pos).equals(variables.get(i).getVariable()))
+                tipo = variables.get(i).getTipo();
+        }
+        
+        if (numTipo == 1)
+            tipo1 = tipo;
+        
+        if(numTipo == 2)
+            tipo2 = tipo;
+    }
+
+    private void esIdentificador() {
+        numTipo = 0;
+        comparaTipo();
+        if(this.tipo1.equals("Dec") || this.tipo1.equals("Ent")){
+        }else{
+            errorEncontrado(error9, identificadores.get(pos));
+        }
+    }
+
+    private void posibleError() {
+        if(inst>0 && llave==0 && instPermiso ==0 &&!palabras.get(pos+1).equals("noMas")){
+            errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
+        }else{
+            if(llave==0 && instPermiso == 0 && !palabras.get(pos+1).equals("noMas")){
+                errorEncontrado(error4, ". Se encontró "+ palabras.get(pos+1) + " pos: "+ pos);
+            }else{
+                pos++;
+            }
+        }
+    }
+
+    private void llamaALaFuncion() {
+        int cont =0;
+    
+        for(int k=0; k<funciones.size(); k++ ){
+            if(funciones.get(k).getVariable().equals(identificadores.get(pos)))
+                cont++;
+        }
+        
+        if(cont == 0){
+            errorEncontrado(error10, variables.get(pos).getVariable());
+        }
+    }
+    
+    public void agregarFuncion(String cadena){
+        
+        for (int h= 0; h<funciones.size(); h++){
+            if(funciones.get(h).getVariable().equals(cadena)){
+                errorEncontrado(error11, cadena);
+                break;
+            }
+        }
+        
+        for (int hh= 0; hh<variables.size(); hh++){
+            if(variables.get(hh).getVariable().equals(cadena)){
+                errorEncontrado(error2, cadena + ", fue declarado como variable");
+                break;
+            }
+        }
+        
+        funciones.add(new Variable(ip,"ident", cadena, "Funcion"));
+        ip++;
+        
+    }
+    
 }
