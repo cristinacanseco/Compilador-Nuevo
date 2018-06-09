@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Cristy
  */
-public class Sintactico4 {
+public class Sintactico {
     Lexico lex;
     
     ListaError le = new ListaError();
@@ -34,7 +34,7 @@ public class Sintactico4 {
     
     String tipo1, tipo2, tipoIdent;
     
-    public Sintactico4(Lexico lex){
+    public Sintactico(Lexico lex){
         this.lex = lex;
         this.palabras = new ArrayList();
         this.identificadores = new ArrayList<>();
@@ -59,6 +59,8 @@ public class Sintactico4 {
         System.out.println("");
       
     }
+    
+    public Sintactico (){}
     
     public void Programa(){
         startTime = System.currentTimeMillis();
@@ -222,7 +224,8 @@ public class Sintactico4 {
                     }
                 }else{                    
                     this.tipo1 = "";
-                    this.tipo2 = "";                    
+                    this.tipo2 = "";  
+                    asignarValor();
                 }
             }
             
@@ -231,6 +234,7 @@ public class Sintactico4 {
                     numTipo = 0;
                     this.tipo1 = "";
                     this.tipo2 = "";
+                    asignarValor();
                 }else{
                     errorEncontrado(error8, identificadores.get(pos-2) + " y " + identificadores.get(pos));               
                 }
@@ -729,5 +733,24 @@ public class Sintactico4 {
         ip++;
         
     }
+
+    public ArrayList<Variable> getVariables() {
+        return variables;
+    }
+
+    private void asignarValor() {        
+        for (int hh= 0; hh<variables.size(); hh++){
+            if (variables.get(hh).getVariable().equals(identificadores.get(pos-2))){
+                variables.get(hh).setValor(identificadores.get(pos));
+                break;
+            }
+        }
+        
+    }
+
+    public ArrayList<String> getIdentificadores() {
+        return identificadores;
+    }
+ 
     
 }

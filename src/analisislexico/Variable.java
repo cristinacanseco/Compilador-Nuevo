@@ -20,7 +20,7 @@ public class Variable {
         this.id=-1;
         this.variable="";
         this.tipo = "";
-        this.valor = "ident";
+        this.valor = "?";
     }
     
     public Variable(int id, String valor, String variable, String tipo){
@@ -49,6 +49,11 @@ public class Variable {
     public String getValor() {
         return valor;
     }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+    
     
         
 }

@@ -7,7 +7,9 @@ package compilador;
 
 import analisislexico.AbrirArchivo;
 import analisislexico.Lexico;
-import analisislexico.Sintactico4;
+import analisislexico.Sintactico;
+import analisislexico.Sintactico_Ensamblador;
+import ensamblador.Ensamblador;
 
 /**
  *
@@ -15,10 +17,19 @@ import analisislexico.Sintactico4;
  */
 public class Compilador {
     
-    public static void main(String args[]){       
+    public static void main(String args[]){   
+        
         AbrirArchivo abrirA = new AbrirArchivo();
-        Sintactico4 sin = new Sintactico4(new Lexico(abrirA.abrirInstancia()));
-        sin.Programa();
+        
+//        Sintactico sin = new Sintactico(new Lexico(abrirA.abrirInstancia()));
+//        sin.Programa();
+//        
+//        Ensamblador em = new Ensamblador(sin);
+//        em.generarTxt();
+
+        Sintactico_Ensamblador sin_en = new Sintactico_Ensamblador(new Lexico(abrirA.abrirInstancia()));
+        sin_en.Programa();
+        
     }
     
 }

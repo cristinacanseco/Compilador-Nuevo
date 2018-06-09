@@ -93,7 +93,7 @@ public class Lexico {
                         crearCadena();
                     }else{
                     //return cadenaE1 + cadenaV;
-                        if(cadenaV.equals("Fijo") || cadenaV.equals("{") | cadenaV.equals("Itera") | cadenaV.equals("Ja") | cadenaV.equals("Funcion") | cadenaV.equals("Ven")   )
+                        if(cadenaV.equals("Fijo") || cadenaV.equals("{") | cadenaV.equals("Itera") | cadenaV.equals("Ja") | cadenaV.equals("MiFuncion") | cadenaV.equals("Ven")   )
                             setEsVariableAun(false);
                         
                         if(cadenaV.equals("Ent") || cadenaV.equals("Dec") || cadenaV.equals("Let") )
@@ -128,7 +128,7 @@ public class Lexico {
                     }else{   
                         if(validarNumero(cadenaV.charAt(0))){
                            //return cadenaV;
-                           return "num";
+                           return cadenaV;
                         }else{
                            if(cadenaV.equals("noMas")){
                                return "noMas";
@@ -164,7 +164,7 @@ public class Lexico {
                         crearCadena();
                     }else{
                     //return cadenaE1 + cadenaV;
-                        if(cadenaV.equals("Fijo") || cadenaV.equals("{") | cadenaV.equals("Itera") | cadenaV.equals("Ja") | cadenaV.equals("Funcion") | cadenaV.equals("Ven")   )
+                        if(cadenaV.equals("Fijo") || cadenaV.equals("{") | cadenaV.equals("Itera") | cadenaV.equals("Ja") | cadenaV.equals("MiFuncion") | cadenaV.equals("Ven")   )
                             setEsVariableAun(false);
                         
                         if(cadenaV.equals("Ent") || cadenaV.equals("Dec") || cadenaV.equals("Let") )
@@ -541,7 +541,7 @@ public class Lexico {
         }
         
         if (cont == 0){
-            variable.add(new Variable(id,"ident", cadena, this.tipo));
+            variable.add(new Variable(id,"?", cadena, this.tipo));
             id++;
             return "exito";
         }else{

@@ -29,6 +29,7 @@ public class TablaSimbolos {
         this.simbolos.add("Nein");
         this.simbolos.add("Funcion");
         this.simbolos.add("Ven");
+        this.simbolos.add("MiFuncion");
         this.simbolos.add("+");
         this.simbolos.add("-");
         this.simbolos.add("*");
